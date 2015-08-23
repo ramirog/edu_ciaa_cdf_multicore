@@ -1,0 +1,23 @@
+# PASOS PARA COMPILAR y DESCARGAR FIRMWARE A LA EDU CIAA.
+
+Los pasos son para linux. No fue testeado en windows.
+
+ 1) Preparar herramientas compilacion
+
+Descargar toolchain GCC ARM Embedded y descomprimir en carpeta <CIAA_TOOLS>
+Descargar open ocd y compilar en carpeta <CIAA_TOOLS>
+Pasos 1 a 5 en: http://www.proyecto-ciaa.com.ar/devwiki/doku.php?id=docu:fw:bm:ide:install_linux
+
+ 2) Compilar desde una consola
+
+cd <directorio donde esta este archivo> 
+export PATH=<CIAA_TOOLS>/gcc-arm-none-eabi-4_9-2015q2/bin:<CIAA_TOOLS>/openocd-0.9.0/src:$PATH
+make clean
+make
+
+ 3) Descargar a la edu ciaa
+
+make download
+
+
+

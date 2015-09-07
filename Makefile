@@ -18,7 +18,7 @@ endef
 # INCLUDE CONFIG MAKEFILE
 
 -include Makefile.mine
-PROJECT_PATH ?= .$(DS)examples$(DS)dual_blinking
+PROJECT_PATH ?= .$(DS)examples$(DS)com_signal
 
 
 ###############################################################################

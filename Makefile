@@ -119,11 +119,8 @@ endef
 # TARGETS
 
 .PHONY: all
-all: out_dirs $(PROJECT_NAME)
+all: $(PROJECT_NAME)
 
-.PHONY: out_dirs
-out_dirs:
-	$(foreach core,$(CORES), mkdir -p $(OUT_DIR)$(DS)obj$(DS)$(core) $(endl))
 
 $(foreach i,$(CORES),$(eval $(call CORE_TEMPLATE,$(i))))
 

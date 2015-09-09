@@ -85,6 +85,7 @@ define CORE_TEMPLATE
 
 LIBS := ''
 ARCH := $$($(1)_ARCH)
+CORE_ID := $(1)
 include $$(foreach coremodule, $$($(1)_MODS),$$(coremodule)$(DS)mak$(DS)Makefile)
 $(1)_LIBS := $$(LIBS)
 
@@ -107,6 +108,7 @@ $(1)_TARGET_NAME := $(BIN_DIR)$(DS)$(PROJECT_NAME)_$(CORE_ID)
 $(1)_defs:
 	@echo 'Setting ARCH to $$($(1)_ARCH)'
 	$$(eval ARCH := $$($(1)_ARCH))
+	$$(eval CORE_ID := $(1))
 
 $$($(1)_OBJ_DIR)$(DS)%.o: %.c
 	@echo ''

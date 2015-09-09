@@ -66,5 +66,5 @@ rtos_$(1)_SRC_FILES 	  = $$(wildcard $$(rtos_$(1)_SRC_PATH)$(DS)*.c)						\
 
 endef
 
-$(eval $(call RTOS_TEMPLATE,$(ARCH)))
+$(eval $(call RTOS_TEMPLATE,$(CORE_ID)))
 

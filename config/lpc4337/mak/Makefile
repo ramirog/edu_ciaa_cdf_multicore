@@ -8,17 +8,17 @@ NM = arm-none-eabi-nm
 AS = arm-none-eabi-as
 
 # M4 FLAGS
-M4_CFLAGS = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -DCORE_M4
+M4_CFLAGS += -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -DCORE_M4
 
-M4_LFLAGS = -T $(CONFIG_DIR)$(DS)lpc4337$(DS)ld$(DS)ciaa_lpc4337_m4.ld
+M4_LFLAGS += -T $(CONFIG_DIR)$(DS)lpc4337$(DS)ld$(DS)ciaa_lpc4337_m4.ld
 M4_LFLAGS += -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp
 
 M4_AFLAGS += -ggdb3 -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 
 # M0 FLAGS
-M0_CFLAGS = -mcpu=cortex-m0 -DCORE_M0 -DLPC43XX_CORE_M0APP
+M0_CFLAGS += -mcpu=cortex-m0 -DCORE_M0 -DLPC43XX_CORE_M0APP
 
-M0_LFLAGS = -T $(CONFIG_DIR)$(DS)lpc4337$(DS)ld$(DS)ciaa_lpc4337_m0.ld
+M0_LFLAGS += -T $(CONFIG_DIR)$(DS)lpc4337$(DS)ld$(DS)ciaa_lpc4337_m0.ld
 M0_LFLAGS += -mcpu=cortex-m0
 
 M0_AFLAGS += -ggdb3 -mcpu=cortex-m0 -mthumb

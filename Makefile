@@ -18,7 +18,7 @@ endef
 # INCLUDE CONFIG MAKEFILE
 
 -include Makefile.mine
-PROJECT_PATH ?= .$(DS)examples$(DS)com_signal
+PROJECT_PATH ?= .$(DS)examples$(DS)com_queue
 
 
 ###############################################################################
@@ -52,7 +52,7 @@ OPENOCD_FLAGS 		   = -f $(OPENOCD_CFG)
 
 
 ###############################################################################
-# INCLUDE MODS MAKEFILE
+# INCLUDE DRIVERS MAKEFILE
 -include $(DRIVERS_DIR)$(DS)$(DRIVER_NAME)$(DS)mak$(DS)Makefile
 
 
@@ -127,6 +127,7 @@ $$($(1)_TARGET_NAME): $(1)_defs $$($(1)_OBJECTS)
 	@echo '-------------------'
 
 download$(1):
+	@echo  '=== DOWNLOAD $(1) CORE ==='
 	$(OPENOCD_BIN) $(OPENOCD_FLAGS) -c "init" -c "halt 0" -c "flash write_image erase unlock $$($(1)_TARGET_NAME).$(TARGET_DOWNLOAD_EXTENSION) $$(TARGET_DOWNLOAD_FLASH_BASE_ADDR_$(1)) $(TARGET_DOWNLOAD_EXTENSION)" -c "shutdown"
 
 # UPDATE COLLECTION VARIABLES

@@ -85,7 +85,8 @@ SECTIONS
         PROVIDE(end = .);
     } > RamLoc40
     
-    
     PROVIDE(_pvHeapStart = .);
     PROVIDE(_vStackTop = __top_RamLoc40 - 0);
+
+    PROVIDE(sharedIndex = 0x20000000);
 }

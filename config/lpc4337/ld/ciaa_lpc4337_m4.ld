@@ -31,10 +31,15 @@ SECTIONS
         LONG(LOADADDR(.data));
         LONG(    ADDR(.data));
         LONG(  SIZEOF(.data));
+        LONG(LOADADDR(.sharedindex));
+        LONG(    ADDR(.sharedindex));
+        LONG(  SIZEOF(.sharedindex));
         __data_section_table_end = .;
         __bss_section_table = .;
         LONG(    ADDR(.bss));
         LONG(  SIZEOF(.bss));
+        LONG(    ADDR(.shareddata));
+        LONG(  SIZEOF(.shareddata));
         __bss_section_table_end = .;
         __section_table_end = . ;
         /* End of Global Section Table */
@@ -105,4 +110,24 @@ SECTIONS
     
     PROVIDE(_pvHeapStart = .);
     PROVIDE(_vStackTop = __top_RamLoc32 - 0);
+    
+    /* Shared DATA section (RamAHB32) */
+    .sharedindex : ALIGN(4)
+    {
+       FILL(0xff)
+       _shared_index = . ;
+       *(.sharedindex);
+       _eshared_index = . ;
+    } > RamAHB32 AT>MFlashA512
+    
+    /* Shared DATA section (RamAHB32) */
+    .shareddata : ALIGN(4)
+    {
+       FILL(0xff)
+       _shared_data = . ;
+       *(.shareddata);
+       _eshared_data = . ;
+    } > RamAHB32
+    
+
 }

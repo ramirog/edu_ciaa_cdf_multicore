@@ -37,5 +37,10 @@ ICStatus send_command(uint8_t DestinationCore, uint8_t Command,  uint16_t Parame
 		elapsed_time += 1;	// TODO - Use real time
 	} while (status != IPC_OK && elapsed_time < Timeout);
 
+	if (status == IPC_OK)
+		// TODO WAIT ACK - Use one uint32_t for each core in system.
+		// TODO Update Result.
+		return IC_OK;
+
 	return IC_ERROR;
 }

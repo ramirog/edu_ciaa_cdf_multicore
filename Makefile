@@ -89,7 +89,7 @@ include $$(foreach coremodule, $$($(1)_MODS),$$(coremodule)$(DS)mak$(DS)Makefile
 $(1)_LIBS := $$(LIBS)
 
 # SET INCLUDES
-$(1)_INC_PATHS = $$(foreach lib, $$($(1)_LIBS),$$($$(lib)_INC_PATH))
+$(1)_INC_PATHS += $$(foreach lib, $$($(1)_LIBS),$$($$(lib)_INC_PATH))
 $(1)_INC_PATHS += $$(foreach lib, $$(COMMON_LIBS),$$($$(lib)_INC_PATH))
 $(1)_CFLAGS += $$(foreach inc, $$($(1)_INC_PATHS), -I$$(inc))
 $(1)_CFLAGS += -DARCH=$$($(1)_ARCH)

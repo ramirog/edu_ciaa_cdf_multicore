@@ -2,7 +2,8 @@
 
 #include "chip.h"
 #include "gpio_18xx_43xx.h"
-#include "core_api.h"
+#include "comm_handler.h"
+#include "comm_api.h"
 
 #define LED1_PORT_ID 0
 #define LED1_PIN_ID 14
@@ -15,22 +16,24 @@
 
 volatile int i=0;
 
-void M0_M4CORE_IRQHandler(void) {
-	// TODO - Corregir. En caso que se acumulen varios mensajes en el queue este codigo solo lee el primero
+#define E_OK 0U
+#define E_OS_NOFUNC 5U
 
-	LPC_CREG->M4TXEVENT = 0; 	/* ACK */
-	uint8_t sourcecore = 0;
-	uint8_t command = 0;
-	uint16_t parameter = 0;
-	read_command(&sourcecore, &command, &parameter, 0);
-
-	if (command == 30)
+uint16_t execute_command(uint8_t Command, uint16_t Parameter) {
+	if (Command == 30) {
 		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED1_PORT_ID, LED1_PIN_ID);
-	if (command == 31)
+		return E_OK;
+	} else if (Command == 31) {
 		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED2_PORT_ID, LED2_PIN_ID);
-	if (command == 32)
+		return E_OK;
+	} else if (Command == 32) {
 		async_send_command(0, 22, 0, 0);
+		return E_OK;
+	}
+
+	return E_OS_NOFUNC;
 }
+
 
 int main(void) {
 	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, LED1_PORT_ID, LED1_PIN_ID);

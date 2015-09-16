@@ -3,7 +3,8 @@
 #include "chip.h"
 #include "gpio_18xx_43xx.h"
 #include "start_m0_core.h"
-#include "core_api.h"
+#include "comm_handler.h"
+#include "comm_api.h"
 
 #define LED1_PORT_ID 0
 #define LED1_PIN_ID 14
@@ -16,17 +17,16 @@
 
 extern uint32_t __m0_core_isr_vectors_start__;
 
-void M0CORE_IRQHandler(void) {
-	// TODO - Corregir. En caso que se acumulen varios mensajes en el queue este codigo solo lee el primero
+#define E_OK 0U
+#define E_OS_NOFUNC 5U
 
-	LPC_CREG->M0APPTXEVENT = 0; 	/* ACK */
-	uint8_t sourcecore = 0;
-	uint8_t command = 0;
-	uint16_t parameter = 0;
-	read_command(&sourcecore, &command, &parameter, 0);
-
-	if (command == 22)
+uint16_t execute_command(uint8_t Command, uint16_t Parameter) {
+	if (Command == 22) {
 		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED3_PORT_ID, LED3_PIN_ID);
+		return E_OK;
+	}
+
+	return E_OS_NOFUNC;
 }
 
 volatile int i=0;

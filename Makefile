@@ -122,6 +122,7 @@ $$($(1)_OBJ_DIR)$(DS)%.o : %.s
 
 $$($(1)_TARGET_NAME): $(1)_defs $$($(1)_OBJECTS)
 	@echo '=== LINK $(1) CORE ==='
+	@mkdir -p $$(@D)
 	$(LD)  -o $$@.xsf $$($(1)_OBJECTS) $$(LFLAGS) $$($(1)_LFLAGS) -Wl,-Map="$$@.map",-gc-sections
 	arm-none-eabi-objcopy -v -O binary $$@.xsf $$@.bin
 	@echo '-------------------'

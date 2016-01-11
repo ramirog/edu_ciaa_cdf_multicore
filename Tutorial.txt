@@ -6,18 +6,69 @@ Los pasos son para linux. No fue testeado en windows.
 
 Descargar toolchain GCC ARM Embedded y descomprimir en carpeta <CIAA_TOOLS>
 Descargar open ocd y compilar en carpeta <CIAA_TOOLS>
-Pasos 1 a 5 en: http://www.proyecto-ciaa.com.ar/devwiki/doku.php?id=docu:fw:bm:ide:install_linux
+Pasos 1 a 5, y 7 en: http://www.proyecto-ciaa.com.ar/devwiki/doku.php?id=docu:fw:bm:ide:install_linux
 
- 2) Compilar desde una consola
+IMPORTANTE: Es necesario el paso 7 para que funcione "make download". 
+Caso contrario muestra el error:  unable to open ftdi device with vid 0403, pid 6010, description '*' and serial '*'
+
+Otra posibilidad es instalar el openocd oficial de la distribucion de ubuntu.
+
+
+2) Compilar el proyecto desde una consola
 
 cd <directorio donde esta este archivo> 
-export PATH=<CIAA_TOOLS>/gcc-arm-none-eabi-4_9-2015q2/bin:<CIAA_TOOLS>/openocd-0.9.0/src:$PATH
+export PATH=<CIAA_TOOLS>/gcc-arm-none-eabi-5_2-2015q4/bin:<CIAA_TOOLS>/openocd-0.9.0/src:$PATH
 make clean
 make
+
+export PATH=/home/so/Apps/ciaa/gcc-arm-none-eabi-5_2-2015q4/bin:/home/so/Apps/ciaa/openocd-0.9.0/src:$PATH
+
 
  3) Descargar a la edu ciaa
 
 make download
 
 
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+Copia local de pasos 1 a 5, y 7 en: http://www.proyecto-ciaa.com.ar/devwiki/doku.php?id=docu:fw:bm:ide:install_linux
+{{{
+1) Instalar paquetes adicionales:
+
+64-bits:
+sudo apt-get install php5-cli libftdi-dev libusb-1.0-0-dev git git-gui libgtk2.0-0:i386 libxtst6:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 libglu1-mesa:i386 libncurses5:i386 libudev1:i386 libusb-1.0:i386 libusb-0.1:i386 gtk2-engines-murrine:i386 libnss3-1d:i386 libwebkitgtk-1.0-0 gtkterm
+
+32-bits:
+sudo apt-get install php5-cli libftdi-dev libusb-1.0-0-dev git git-gui libgtk2.0-0 libxtst6 libpangox-1.0-0 libpangoxft-1.0-0 libidn11 libglu1-mesa libncurses5 libudev1 libusb-1.0 libusb-0.1 gtk2-engines-murrine libnss3-1d libwebkitgtk-1.0-0 gtkterm
+
+Puede que en 32-bits indique que algunos paquetes ya están instalados.
+
+2) Agregar el usuario al grupo dialout (para acceder a puertos serie con gtkterm):
+
+sudo adduser $USER dialout
+
+3) Crear una carpeta ciaa-ide en el home del usuario e ingresar a la misma.
+
+mkdir ciaa-ide
+cd ciaa-ide
+
+4) Descargar toolchain y descomprimir.
+
+wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q1-update/+download/gcc-arm-none-eabi-4_9-2015q1-20150306-linux.tar.bz2
+tar -xjvf gcc-arm-none-eabi-4_9-2015q1-20150306-linux.tar.bz2
+
+5) Descargar, descomprimir y compilar OpenOCD:
+
+wget http://ufpr.dl.sourceforge.net/project/openocd/openocd/0.9.0/openocd-0.9.0.tar.bz2
+tar -xvjf openocd-0.9.0.tar.bz2
+cd openocd-0.9.0
+./configure --enable-ftdi 
+make
+
+7) Copiar los permisos de OpenOCD en las reglas de udev y reiniciar el servicio: 
+sudo cp openocd-0.9.0/contrib/99-openocd.rules /etc/udev/rules.d/
+sudo service udev restart
+
+}}}
 

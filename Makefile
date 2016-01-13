@@ -76,11 +76,14 @@ COMMON_LIBS := $(LIBS)
 ###############################################################################
 # CORE TEMPLATE
 # PARAMETRO <COREID>
-# VARIABLES A DEFINIR
-#  1. <CORE_ID>_SRC: sources del proyecto que van al core
-#  1. <CORE_ID>_CFLAGS: CFLAGS especificos para el core
-#  1. <CORE_ID>_LFLAGS: LFLAGS especificos para el core
-
+# VARIABLES TO DEFINE IN THE PROJECT's Makefile
+#  1. <CORE_ID>_SRC: Project sources exclusive to the core. Absolute or relative to '<CORE_ID>_SRC_DIRS'
+#  1. <CORE_ID>_CFLAGS: CFLAGS exclusive to the core
+#  1. <CORE_ID>_AFLAGS: AFLAGS exclusive to the core
+#  1. <CORE_ID>_LFLAGS: LFLAGS exclusive to the core
+#  1. <CORE_ID>_SRC_DIRS: Directory list with core sources
+#  1. <CORE_ID>_INC_DIRS: Directory list with core includes
+#  1. <CORE_ID>_MODS: Modules exclusive to the core
 define CORE_TEMPLATE
 
 # '----------------------- $(1) --------------------------'
@@ -95,10 +98,11 @@ $(1)_INC_DIRS += $$(foreach lib, $$($(1)_LIBS),$$($$(lib)_INC_PATH))
 $(1)_SRC += $$(foreach lib, $$($(1)_LIBS),$$($$(lib)_SRC_FILES))
 
 # SET CORE FLAGS
-$(1)_AFLAGS += $$(COMMON_AFLAGS)
-$(1)_CFLAGS += $$(COMMON_CFLAGS)
-$(1)_CFLAGS += -DARCH=$$($(1)_ARCH)
-$(1)_CFLAGS += $$(foreach inc, $$($(1)_INC_DIRS), -I$$(inc))
+$(1)_ALL_AFLAGS := $$(COMMON_AFLAGS) $$($(1)_AFLAGS)
+$(1)_ALL_CFLAGS := $$(COMMON_CFLAGS)
+$(1)_ALL_CFLAGS += $$(foreach inc, $$($(1)_INC_DIRS), -I$$(inc))
+$(1)_ALL_CFLAGS += -DARCH=$$($(1)_ARCH) $$($(1)_CFLAGS)
+$(1)_ALL_LFLAGS := $$(COMMON_LFLAGS) -Wl,-Map="$$@.map",-gc-sections $$($(1)_LFLAGS)
 
 # SET CORE OBJECT FILES
 $(1)_OBJ_DIR := $(OUT_DIR)$(DS)obj$(DS)$(1)
@@ -118,18 +122,19 @@ $$($(1)_OBJ_DIR)$(DS)%.o: %.c
 	@echo ''
 	@echo 'Core $(1). Compiling 'c' file: $$<.'
 	@mkdir -p $$(@D)
-	$(CC) -o $$@ $$< $$($(1)_CFLAGS)
+	$(CC) -o $$@ $$< $$($(1)_ALL_CFLAGS)
 
 $$($(1)_OBJ_DIR)$(DS)%.o: %.s
 	@echo ''
 	@echo Compiling 'asm' file: $<
 	@mkdir -p $$(@D)
-	$(AS) -o $$@ $$< $$($(1)_AFLAGS)
+	$(AS) -o $$@ $$< $$($(1)_ALL_AFLAGS)
 
 $$($(1)_TARGET_NAME): $(1)_defs $$($(1)_OBJECTS)
+	@echo ''
 	@echo '=== LINK $(1) CORE ==='
 	@mkdir -p $$(@D)
-	$(LD)  -o $$@.xsf $$($(1)_OBJECTS) $$(COMMON_LFLAGS) $$($(1)_LFLAGS) -Wl,-Map="$$@.map",-gc-sections
+	$(LD)  -o $$@.xsf $$($(1)_OBJECTS) $$($(1)_ALL_LFLAGS)
 	arm-none-eabi-objcopy -v -O binary $$@.xsf $$@.bin
 	@echo '-------------------'
 	@echo ''

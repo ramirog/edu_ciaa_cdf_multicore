@@ -24,5 +24,3 @@ M4_INC_DIRS = $(PROJECT_PATH)$(DS)inc
 M0_SRC       = multicore_m0.c crp.c cr_startup_lpc43xx-m0app.c
 M0_SRC_DIRS = $(DVR_SRC_DIR)$(DS) $(PROJECT_PATH)$(DS)src$(DS)m0
 M0_INC_DIRS = $(PROJECT_PATH)$(DS)inc 
-
-PROCESSOR_NAME ?= lpc4337

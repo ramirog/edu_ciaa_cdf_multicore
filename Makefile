@@ -57,13 +57,11 @@ OPENOCD_FLAGS 		   = -f $(OPENOCD_CFG)
 
 
 ###############################################################################
-# INITIALIZE FLAGS
+# SET COMMON FLAGS
 CFLAGS ?= -Wall -ggdb3
 COMMON_CFLAGS += -DCPUTYPE=$(CPUTYPE) -DCPU=$(CPU) -DBOARD=$(BOARD)
 COMMON_CFLAGS += -c -mthumb -DNO_BOARD_LIB $(CFLAGS)
-
 COMMON_LFLAGS += -nostdlib -fno-builtin -mthumb $(LFLAGS)
-
 COMMON_AFLAGS = $(AFLAGS)
 
 
@@ -102,7 +100,7 @@ $(1)_ALL_AFLAGS := $$(COMMON_AFLAGS) $$($(1)_AFLAGS)
 $(1)_ALL_CFLAGS := $$(COMMON_CFLAGS)
 $(1)_ALL_CFLAGS += $$(foreach inc, $$($(1)_INC_DIRS), -I$$(inc))
 $(1)_ALL_CFLAGS += -DARCH=$$($(1)_ARCH) $$($(1)_CFLAGS)
-$(1)_ALL_LFLAGS := $$(COMMON_LFLAGS) -Wl,-Map="$$@.map",-gc-sections $$($(1)_LFLAGS)
+$(1)_ALL_LFLAGS := $$(COMMON_LFLAGS)
 
 # SET CORE OBJECT FILES
 $(1)_OBJ_DIR := $(OUT_DIR)$(DS)obj$(DS)$(1)
@@ -134,7 +132,7 @@ $$($(1)_TARGET_NAME): $(1)_defs $$($(1)_OBJECTS)
 	@echo ''
 	@echo '=== LINK $(1) CORE ==='
 	@mkdir -p $$(@D)
-	$(LD)  -o $$@.xsf $$($(1)_OBJECTS) $$($(1)_ALL_LFLAGS)
+	$(LD)  -o $$@.xsf $$($(1)_OBJECTS) $$($(1)_ALL_LFLAGS) -Wl,-Map="$$@.map",-gc-sections $$($(1)_LFLAGS)
 	arm-none-eabi-objcopy -v -O binary $$@.xsf $$@.bin
 	@echo '-------------------'
 	@echo ''

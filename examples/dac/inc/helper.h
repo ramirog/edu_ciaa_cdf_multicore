@@ -8,7 +8,7 @@
 #define PIN_ID2 12
 
 /** Initializes LED 2 or LED 3 pins for blinking */
-void init_blink(uint8_t PinId);
+void init_board_leds_and_buttons();
 /** Blinks LED 2 or LED 3. PRE: Should be initialized */
 void blink(uint8_t PinId);
 

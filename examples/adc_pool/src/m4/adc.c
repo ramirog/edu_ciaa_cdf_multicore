@@ -26,7 +26,7 @@ int main(void) {
 
 	init_adc_pool(ADC_ID1);
 
-	init_blink(PIN_ID1);
+	init_board_leds_and_buttons();
 	init_systick(100000); // A sample every 10 us.
 
     while(1)

@@ -9,14 +9,14 @@
 void init_systick(uint32_t Frequency);
 
 
-/** ------  BLINKING ------ */
+/** ------  BOARD LEDS AND BUTTONS ------ */
 
 /** Leds in board */
 #define PIN_ID1 11
 #define PIN_ID2 12
 
-/** Initializes LED 2 or LED 3 pins for blinking */
-void init_blink(uint8_t PinId);
+/** Initializes leds and buttons for board */
+void init_board_leds_and_buttons();
 /** Blinks LED 2 or LED 3. PRE: Should be initialized */
 void blink(uint8_t PinId);
 
